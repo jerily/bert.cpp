@@ -532,6 +532,17 @@ struct bert_ctx * bert_load_from_file(const char *fname)
             layer.ff_o_b = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, n_embd);
 
             // map by name
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.attn.q.weight"] = layer.q_w;
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.attn.q.bias"] = layer.q_b;
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.attn.k.weight"] = layer.k_w;
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.attn.k.bias"] = layer.k_b;
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.attn.v.weight"] = layer.v_w;
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.attn.v.bias"] = layer.v_b;
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.LayerNorm.weight"] = layer.ln_att_w;
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.LayerNorm.bias"] = layer.ln_att_b;
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.attn.o.weight"] = layer.o_w;
+            model.tensors["encoder.layer." + std::to_string(i) + ".attention.attn.o.bias"] = layer.o_b;
+
 
             model.tensors["encoder.layer." + std::to_string(i) + ".attention.self.query.weight"] = layer.q_w;
             model.tensors["encoder.layer." + std::to_string(i) + ".attention.self.query.bias"] = layer.q_b;
@@ -588,6 +599,7 @@ struct bert_ctx * bert_load_from_file(const char *fname)
 
             std::string name(length, 0);
             fin.read(&name[0], length);
+            fprintf(stderr, "%s: loading tensor '%s' - please wait ...\n", __func__, name.data());
 
             if (model.tensors.find(name.data()) == model.tensors.end())
             {

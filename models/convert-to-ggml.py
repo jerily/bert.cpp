@@ -72,7 +72,7 @@ for i in range(hparams["vocab_size"]):
 
 for name in list_vars.keys():
     data = list_vars[name].squeeze().numpy()
-    if name in ['embeddings.position_ids', 'pooler.dense.weight', 'pooler.dense.bias']:
+    if name in ['embeddings.position_ids', 'pooler.dense.weight', 'pooler.dense.bias', 'encoder.relative_attention_bias.weight']:
         continue
     print("Processing variable: " + name + " with shape: ", data.shape)
 

@@ -4,6 +4,8 @@ project("bert.cpp" C CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -185,6 +187,8 @@ endif()
 # Build libraries
 #
 
+set(TARGET bert)
+
 if (MSVC)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
@@ -212,3 +216,10 @@ else()
     add_subdirectory(examples)
     add_subdirectory(models)
 endif()
+
+install(TARGETS ${TARGET}
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib/static
+        )
+
+install(FILES bert.h DESTINATION include)
